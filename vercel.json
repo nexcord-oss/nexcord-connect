@@ -1,4 +1,4 @@
 {
-  "installCommand": "yarn install && cd apps/demo && yarn add @nexcord-oss/connect@0.1.0 --no-lockfile",
-  "buildCommand": "yarn workspace demo build"
+  "installCommand": "cd ../.. && yarn install",
+  "buildCommand": "next build"
 }
