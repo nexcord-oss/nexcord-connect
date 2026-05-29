@@ -28,13 +28,14 @@ export function NexcordProvider(
   const { children, cloudApiKey } = props;
   const [mounted, setMounted] = useState(false);
   const [queryClient] = useState(() => new QueryClient());
-  const [wagmiConfig] = useState(() => createNexcordWagmiConfig(props));
+  const [wagmiConfig, setWagmiConfig] = useState<ReturnType<typeof createNexcordWagmiConfig> | null>(null);
 
   useEffect(() => {
+    setWagmiConfig(createNexcordWagmiConfig(props));
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted || wagmiConfig === null) return null;
 
   const cloudContextValue =
     cloudApiKey === undefined ? {} : { cloudApiKey };
