@@ -8,7 +8,10 @@
     "lint": "biome check .",
     "format": "biome format --write ."
   },
-  "workspaces": ["packages/*", "apps/*"],
+ "workspaces": {
+  "packages": ["packages/*", "apps/*"],
+  "nohoist": ["demo/@nexcord-oss/connect", "demo/@nexcord-oss/connect/**"]
+},
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "turbo": "^1.13.4",
