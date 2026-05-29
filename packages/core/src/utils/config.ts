@@ -12,7 +12,7 @@ const CORS_SAFE_RPC: Record<number, string> = {
 };
 
 function rpcUrl(chain: Chain): string {
-  return CORS_SAFE_RPC[chain.id] ?? chain.rpcUrls.default.http[0];
+  return CORS_SAFE_RPC[chain.id] ?? chain.rpcUrls.default.http[0] ?? "";
 }
 
 export function createNexcordWagmiConfig(config: NexcordConfig) {
