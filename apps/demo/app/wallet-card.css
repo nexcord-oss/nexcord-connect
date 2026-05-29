@@ -1,0 +1,43 @@
+/* Styles the wallet state card for the Nexcord Connect demo. */
+.connect-card {
+  border: 1px solid var(--border-muted);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(17, 21, 28, 0.92), rgba(13, 17, 23, 0.92));
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+  padding: 24px;
+}
+
+.card-header,
+.wallet-details div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #7cf8c5;
+  box-shadow: 0 0 24px rgba(124, 248, 197, 0.7);
+}
+
+.connect-button-frame {
+  margin: 28px 0;
+}
+
+.wallet-details {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+dt {
+  color: var(--text-secondary);
+}
+
+dd {
+  margin: 0;
+  font-weight: 700;
+}
