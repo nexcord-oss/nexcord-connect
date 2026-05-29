@@ -7,6 +7,14 @@ import type { Chain } from "viem";
 
 const DEFAULT_CHAINS = [mainnet, polygon, optimism, arbitrum, base] as const;
 
+const CORS_SAFE_RPC: Record<number, string> = {
+  [mainnet.id]: "https://cloudflare-eth.com",
+};
+
+function rpcUrl(chain: Chain): string {
+  return CORS_SAFE_RPC[chain.id] ?? chain.rpcUrls.default.http[0];
+}
+
 export function createNexcordWagmiConfig(config: NexcordConfig) {
   const chains = (config.chains ?? DEFAULT_CHAINS) as readonly [Chain, ...Chain[]];
   return createConfig({
@@ -15,7 +23,7 @@ export function createNexcordWagmiConfig(config: NexcordConfig) {
       injected(),
       walletConnect({ projectId: config.projectId, showQrModal: false }),
     ],
-    transports: Object.fromEntries(chains.map((c) => [c.id, http(c.rpcUrls.default.http[0])])),
+    transports: Object.fromEntries(chains.map((c) => [c.id, http(rpcUrl(c))])),
     ssr: true,
   });
 }
