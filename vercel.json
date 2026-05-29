@@ -1,5 +1,5 @@
 {
-  "buildCommand": "yarn workspace demo build",
+  "buildCommand": "yarn workspace @nexcord-oss/connect build && yarn workspace demo build",
   "outputDirectory": "apps/demo/.next",
   "installCommand": "yarn install",
   "framework": "nextjs"
