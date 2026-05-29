@@ -5,3 +5,4 @@ dist
 *.tsbuildinfo
 .env
 .env.local
+apps/demo/.env.local

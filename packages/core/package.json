@@ -1,22 +1,39 @@
 {
+  "private": true,
   "name": "@nexcord-oss/connect",
   "version": "0.1.0",
   "description": "The simplest way to add wallet connection to any Next.js app.",
-  "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
-  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsup",
+    "dev": "tsup --watch"
   },
   "peerDependencies": {
-    "@rainbow-me/rainbowkit": "^2.2.8",
     "@tanstack/react-query": "^5.80.6",
     "next": "^15.0.0",
     "react": "^19.0.0",
     "viem": "^2.30.6",
     "wagmi": "^2.15.6"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1"
+  },
+  "dependencies": {
+    "connectkit": "^1.9.2"
   }
 }

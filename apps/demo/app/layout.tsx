@@ -18,7 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NexcordProvider projectId="YOUR_WALLETCONNECT_PROJECT_ID" appName="Nexcord Demo">
+        <NexcordProvider
+          projectId={process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? ""}
+          appName="Nexcord Demo"
+        >
           {children}
         </NexcordProvider>
       </body>

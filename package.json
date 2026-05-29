@@ -2,7 +2,7 @@
   "name": "nexcord-connect",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "npm@11.12.1",
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "build": "turbo build",
     "lint": "biome check .",
@@ -11,7 +11,7 @@
   "workspaces": ["packages/*", "apps/*"],
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "turbo": "^2.5.4",
+    "turbo": "^1.13.4",
     "typescript": "^5.8.3"
   }
 }

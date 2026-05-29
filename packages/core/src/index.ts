@@ -1,4 +1,5 @@
 // Re-exports the public Nexcord Connect SDK API.
+export { NexcordConnectButton } from "./components/NexcordConnectButton.js";
 export { useSignMessage } from "./hooks/useSignMessage.js";
 export type { UseSignMessageResult } from "./hooks/useSignMessage.js";
 export { useTokenBalance } from "./hooks/useTokenBalance.js";

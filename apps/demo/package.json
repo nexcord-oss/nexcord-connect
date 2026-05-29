@@ -1,15 +1,14 @@
 {
-  "name": "@nexcord-oss/demo",
-  "version": "0.1.0",
   "private": true,
+  "name": "demo",
+  "version": "0.1.0",
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "lint": "biome check ."
   },
   "dependencies": {
     "@nexcord-oss/connect": "0.1.0",
-    "@rainbow-me/rainbowkit": "^2.2.8",
     "@tanstack/react-query": "^5.80.6",
     "next": "^15.0.0",
     "react": "^19.0.0",

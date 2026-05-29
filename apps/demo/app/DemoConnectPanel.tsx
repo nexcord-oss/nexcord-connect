@@ -1,8 +1,7 @@
 // Shows the wallet connection controls and current wallet state.
 "use client";
 
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useWalletUser } from "@nexcord-oss/connect";
+import { NexcordConnectButton, useWalletUser } from "@nexcord-oss/connect";
 import type { ReactElement } from "react";
 
 function formatAddress(address: string): string {
@@ -19,7 +18,7 @@ export function DemoConnectPanel(): ReactElement {
         <span>{walletUser === null ? "Ready to connect" : "Wallet connected"}</span>
       </div>
       <div className="connect-button-frame">
-        <ConnectButton />
+        <NexcordConnectButton />
       </div>
       <dl className="wallet-details">
         <div>
