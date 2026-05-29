@@ -15,7 +15,7 @@ export function createNexcordWagmiConfig(config: NexcordConfig) {
       injected(),
       walletConnect({ projectId: config.projectId, showQrModal: false }),
     ],
-    transports: Object.fromEntries(chains.map((c) => [c.id, http()])),
+    transports: Object.fromEntries(chains.map((c) => [c.id, http(c.rpcUrls.default.http[0])])),
     ssr: true,
   });
 }
