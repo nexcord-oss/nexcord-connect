@@ -1,0 +1,74 @@
+/* Defines the global brand tokens and base styles for the Nexcord demo. */
+@font-face {
+  font-family: 'Cal Sans';
+  src: url('/fonts/CalSans-SemiBold.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+:root {
+  --font-display: "Cal Sans", "Segoe UI Variable Display", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Segoe UI Variable Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "SFMono-Regular", "Cascadia Code", Consolas, "Liberation Mono", monospace;
+
+  --bg-base: #070b12;
+  --bg-elevated: #0e131c;
+  --bg-card: #131924;
+  --bg-card-hover: #1b222f;
+  --bg-input: #0b1019;
+
+  --border-subtle: #f6f8fd12;
+  --border-default: #f6f8fd1f;
+  --border-strong: #f6f8fd33;
+  --border-brand: #388cf06b;
+
+  --text-primary: #f0f2f6;
+  --text-secondary: #9ca5b5;
+  --text-muted: #727b8b;
+  --text-body: #aab1c0;
+
+  --brand-primary: #2482eb;
+  --brand-accent: #725ee0;
+  --brand-cyan: #00bed8;
+  --brand-start: #0097e6;
+  --brand-mid: #3c8ff4;
+  --brand-end: #806df1;
+
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-base: 220ms;
+}
+
+html, body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 8% -12%, #0a2b5247, transparent 34rem),
+    linear-gradient(180deg, #090d16, var(--bg-base) 24rem);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+a { color: var(--brand-primary); text-decoration: none; }
+a:hover { color: var(--brand-mid); }

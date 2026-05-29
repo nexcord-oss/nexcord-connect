@@ -1,35 +1,36 @@
-# @nexcord-oss/connect
+# nexcord-connect
 
-The simplest way to add wallet connection to any Next.js app.
+Monorepo for [@nexcord-oss/connect](https://www.npmjs.com/package/@nexcord-oss/connect) - the simplest way to add wallet connection to any Next.js app.
+
+## Packages
+
+| Package | Version | Description |
+|---|---|---|
+| [`@nexcord-oss/connect`](./packages/core) | 0.1.0 | Core SDK |
+
+## Apps
+
+| App | Description |
+|---|---|
+| [`demo`](./apps/demo) | Live demo at [connect.nexcord.app](https://connect.nexcord.app) |
+
+## Development
 
 ```bash
-npm install @nexcord-oss/connect
+# Install dependencies
+yarn install
+
+# Start demo
+yarn workspace demo dev
+
+# Build SDK
+yarn workspace @nexcord-oss/connect build
 ```
-
-```tsx
-"use client";
-import { NexcordProvider, useWalletUser } from "@nexcord-oss/connect";
-function WalletStatus(): JSX.Element {
-  const user = useWalletUser();
-  return <p>{user?.address ?? "Not connected"}</p>;
-}
-export function App(): JSX.Element {
-  return (
-    <NexcordProvider projectId="project-id" appName="Example App">
-      <WalletStatus />
-    </NexcordProvider>
-  );
-}
-```
-
-## Cloud
-
-Get a managed WalletConnect proxy, connection analytics, and a dashboard at [connect.nexcord.app](https://connect.nexcord.app).
-
-## Docs
-
-Read the documentation at [connect.nexcord.app/docs](https://connect.nexcord.app/docs).
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## License
+
+MIT - built by [Nexcord](https://nexcord.app)
