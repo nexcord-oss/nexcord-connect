@@ -128,6 +128,48 @@ const { connector, connectors, connectWith } = useNexcordWallet();
 | `connectors` | `{ id, name }[]` | All available connectors |
 | `connectWith(connector)` | `({ id, name }) => void` | Connect via a specific connector |
 
+### `useNexcordSign`
+
+Constructs a Nexcord-formatted sign-in message and wraps wagmi's `useSignMessage`. Useful for wallet-based authentication flows.
+
+```tsx
+import { useNexcordSign } from "@nexcord-oss/connect";
+
+const { signMessage, signature, message, isPending, error } = useNexcordSign(nonce);
+```
+
+The `message` string is always `"Verify wallet for Nexcord\nNonce: {nonce}"`.
+
+| Field | Type | Description |
+|---|---|---|
+| `signMessage()` | `() => void` | Trigger the wallet signature request |
+| `signature` | `string \| undefined` | Hex signature returned by the wallet |
+| `message` | `string` | The exact message string that will be signed |
+| `isPending` | `boolean` | True while waiting for wallet confirmation |
+| `error` | `Error \| null` | Last signing error, or null |
+
+**Example:**
+
+```tsx
+"use client";
+import { useNexcordSign } from "@nexcord-oss/connect";
+
+export function AuthButton({ nonce }: { nonce: string }) {
+  const { signMessage, signature, message, isPending, error } = useNexcordSign(nonce);
+
+  return (
+    <div>
+      <pre>{message}</pre>
+      <button onClick={signMessage} disabled={isPending}>
+        {isPending ? "Waiting for wallet…" : "Sign in with wallet"}
+      </button>
+      {signature && <p>Signature: {signature}</p>}
+      {error && <p style={{ color: "red" }}>{error.message}</p>}
+    </div>
+  );
+}
+```
+
 ### Full headless example
 
 ```tsx

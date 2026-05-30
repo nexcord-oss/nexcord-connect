@@ -4,6 +4,7 @@ import {
   useNexcordConnect,
   useNexcordChain,
   useNexcordWallet,
+  useNexcordSign,
 } from "@nexcord-oss/connect";
 import type { ReactElement } from "react";
 import Link from "next/link";
@@ -153,6 +154,69 @@ function WalletState(): ReactElement {
   );
 }
 
+const DEMO_NONCE = "demo-nonce-123";
+
+function SignSection(): ReactElement {
+  const { isConnected } = useNexcordConnect();
+  const { signMessage, signature, message, isPending, error } = useNexcordSign(DEMO_NONCE);
+
+  if (!isConnected) return <></>;
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-sm)", paddingTop: "var(--space-md)", borderTop: "1px solid var(--border-subtle)" }}>
+      <span style={{ fontSize: "0.75rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-muted)", fontWeight: 500 }}>
+        Sign message
+      </span>
+
+      {/* Message preview */}
+      <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-default)", borderRadius: "10px", padding: "0.75rem 1rem" }}>
+        <pre style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "var(--text-secondary)", margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
+          {message}
+        </pre>
+      </div>
+
+      {/* Sign button */}
+      <button
+        onClick={signMessage}
+        disabled={isPending}
+        style={{
+          padding: "0.625rem 1rem",
+          background: isPending ? "transparent" : "linear-gradient(135deg, #2482EB, #725EE0)",
+          border: isPending ? "1px solid var(--border-strong)" : "none",
+          borderRadius: "8px",
+          color: isPending ? "var(--text-muted)" : "#fff",
+          fontSize: "0.875rem",
+          fontFamily: "var(--font-body)",
+          fontWeight: 500,
+          cursor: isPending ? "wait" : "pointer",
+          alignSelf: "flex-start",
+          transition: "opacity var(--motion-base) var(--ease-out-quint)",
+          opacity: isPending ? 0.6 : 1,
+        }}
+      >
+        {isPending ? "Waiting for wallet…" : "Sign Message"}
+      </button>
+
+      {/* Error */}
+      {error && (
+        <p style={{ fontSize: "0.8rem", color: "#f87171", margin: 0 }}>{error.message}</p>
+      )}
+
+      {/* Signature result */}
+      {signature && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.375rem" }}>
+          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Signature</span>
+          <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-brand)", borderRadius: "10px", padding: "0.75rem 1rem" }}>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", color: "var(--brand-primary)", margin: 0, wordBreak: "break-all" }}>
+              {signature}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function HeadlessView(): ReactElement {
   const { isConnected } = useNexcordConnect();
 
@@ -186,6 +250,7 @@ export function HeadlessView(): ReactElement {
             <ConnectorList />
             <WalletState />
             <ChainSwitcher />
+            <SignSection />
           </div>
         </div>
       </main>

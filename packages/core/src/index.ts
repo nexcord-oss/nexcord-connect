@@ -11,6 +11,8 @@ export { useNexcordChain } from "./hooks/useNexcordChain.js";
 export type { UseNexcordChainResult } from "./hooks/useNexcordChain.js";
 export { useNexcordWallet } from "./hooks/useNexcordWallet.js";
 export type { UseNexcordWalletResult, NexcordConnectorInfo } from "./hooks/useNexcordWallet.js";
+export { useNexcordSign } from "./hooks/useNexcordSign.js";
+export type { UseNexcordSignResult } from "./hooks/useNexcordSign.js";
 export { NexcordProvider, useNexcordCloud } from "./providers/NexcordProvider.js";
 export type { NexcordConfig, NexcordProviderProps, WalletUser } from "./types/index.js";
 export { createNexcordWagmiConfig } from "./utils/config.js";
