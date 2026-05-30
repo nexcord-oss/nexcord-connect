@@ -22,6 +22,11 @@ export interface NexcordConfig {
    * Optional list of chains supported by the consuming application.
    */
   chains?: readonly [Chain, ...Chain[]];
+  /**
+   * "default" renders ConnectKit UI. "headless" omits ConnectKit entirely,
+   * providing only wagmi context for use with the headless hooks.
+   */
+  mode?: "default" | "headless";
 }
 
 /**

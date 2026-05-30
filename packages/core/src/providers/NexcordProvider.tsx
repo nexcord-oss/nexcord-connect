@@ -40,11 +40,15 @@ export function NexcordProvider(
   const cloudContextValue =
     cloudApiKey === undefined ? {} : { cloudApiKey };
 
+  const inner = props.mode === "headless"
+    ? children
+    : <ConnectKitProvider>{children}</ConnectKitProvider>;
+
   return (
     <NexcordCloudContext.Provider value={cloudContextValue}>
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
-          <ConnectKitProvider>{children}</ConnectKitProvider>
+          {inner}
         </QueryClientProvider>
       </WagmiProvider>
     </NexcordCloudContext.Provider>
