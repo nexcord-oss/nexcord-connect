@@ -1,6 +1,6 @@
 {
   "name": "@nexcord-oss/connect",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "The simplest way to add wallet connection to any Next.js app.",
   "license": "MIT",
   "main": "./dist/index.js",

@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "demo",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbopack",
     "lint": "biome check ."
   },
   "dependencies": {
-    "@nexcord-oss/connect": "0.5.2",
+    "@nexcord-oss/connect": "0.5.3",
     "@tanstack/react-query": "^5.80.6",
     "next": "^15.0.0",
     "react": "^19.0.0",

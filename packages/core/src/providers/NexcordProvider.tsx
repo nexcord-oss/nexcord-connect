@@ -52,6 +52,23 @@ export function NexcordProvider(
     setMounted(true);
   }, []);
 
+  // Swallow transient WalletConnect relay rejections so they don't pollute
+  // the console. These are benign reconnect/subscription hiccups, not app errors.
+  useEffect(() => {
+    const handler = (event: PromiseRejectionEvent) => {
+      const msg: string = event.reason?.message ?? "";
+      if (
+        msg.includes("Connection interrupted while trying to subscribe") ||
+        msg.includes("Subscribing to") ||
+        msg.includes("failed, please try again")
+      ) {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("unhandledrejection", handler);
+    return () => window.removeEventListener("unhandledrejection", handler);
+  }, []);
+
   if (!mounted || configRef.current === null) return null;
 
   const cloudContextValue =
