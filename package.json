@@ -1,6 +1,7 @@
 {
   "name": "nexcord-connect",
-  "version": "0.3.0",
+  "version": "0.3.1",
+  "license": "MIT",
   "private": true,
   "packageManager": "yarn@1.22.22",
   "scripts": {
