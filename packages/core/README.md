@@ -46,7 +46,7 @@ That's it. No extra installs, no configuration.
 ## Hooks
 
 ```tsx
-import { useWalletUser, useTokenBalance, useSignMessage } from "@nexcord-oss/connect";
+import { useWalletUser, useTokenBalance, useNexcordSign } from "@nexcord-oss/connect";
 
 // Get connected wallet info
 const user = useWalletUser();
@@ -56,8 +56,10 @@ const user = useWalletUser();
 const { balance, symbol } = useTokenBalance({ tokenAddress: "0x..." });
 
 // Sign a message
-const { signMessage, signature } = useSignMessage();
+const { signMessage, signature } = useNexcordSign({ message: "Welcome." });
 ```
+
+> **`useSignMessage` is deprecated** and will be removed in v1.0.0. Use `useNexcordSign({ message: "..." })` instead.
 
 ## Headless mode
 
@@ -159,15 +161,20 @@ const { balance } = useNexcordBalance({ chainId: 137 });
 
 ### `useNexcordSign`
 
-Constructs a Nexcord-formatted sign-in message and wraps wagmi's `useSignMessage`. Useful for wallet-based authentication flows.
+Signs a message with the connected wallet. Accepts a nonce, a raw message, or a plain string (treated as nonce for backwards compatibility).
 
 ```tsx
 import { useNexcordSign } from "@nexcord-oss/connect";
 
-const { signMessage, signature, message, isPending, error } = useNexcordSign(nonce);
-```
+// Nonce → constructs "Verify wallet for Nexcord\nNonce: {nonce}"
+const { signMessage, signature, message, isPending, error } = useNexcordSign({ nonce: "abc-123" });
 
-The `message` string is always `"Verify wallet for Nexcord\nNonce: {nonce}"`.
+// Raw message → signs it directly
+const { signMessage, message } = useNexcordSign({ message: "Welcome to my app." });
+
+// Plain string → treated as nonce (backwards-compat)
+const { signMessage } = useNexcordSign("abc-123");
+```
 
 | Field | Type | Description |
 |---|---|---|
@@ -175,28 +182,20 @@ The `message` string is always `"Verify wallet for Nexcord\nNonce: {nonce}"`.
 | `signature` | `string \| undefined` | Hex signature returned by the wallet |
 | `message` | `string` | The exact message string that will be signed |
 | `isPending` | `boolean` | True while waiting for wallet confirmation |
-| `error` | `Error \| null` | Last signing error, or null |
+| `error` | `Error \| null` | Normalized error, or null |
 
-**Example:**
+### `normalizeWalletError`
+
+Maps raw wagmi/wallet errors to readable user-facing messages. All hooks apply this automatically — export is provided for consumers who want to use it directly.
 
 ```tsx
-"use client";
-import { useNexcordSign } from "@nexcord-oss/connect";
+import { normalizeWalletError } from "@nexcord-oss/connect";
 
-export function AuthButton({ nonce }: { nonce: string }) {
-  const { signMessage, signature, message, isPending, error } = useNexcordSign(nonce);
-
-  return (
-    <div>
-      <pre>{message}</pre>
-      <button onClick={signMessage} disabled={isPending}>
-        {isPending ? "Waiting for wallet…" : "Sign in with wallet"}
-      </button>
-      {signature && <p>Signature: {signature}</p>}
-      {error && <p style={{ color: "red" }}>{error.message}</p>}
-    </div>
-  );
-}
+const readable = normalizeWalletError(error);
+// "You rejected the request in your wallet."
+// "No wallet found. Please install MetaMask or another wallet."
+// "Failed to switch network. Please try manually in your wallet."
+// ... or the original error if no mapping matches
 ```
 
 ### Full headless example

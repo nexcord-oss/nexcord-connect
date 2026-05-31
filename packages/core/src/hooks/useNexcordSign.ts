@@ -1,23 +1,39 @@
 "use client";
-// Constructs a Nexcord-formatted sign-in message and wraps wagmi's useSignMessage.
+// Constructs a Nexcord-formatted or custom message and wraps wagmi's useSignMessage.
 import { useSignMessage } from "wagmi";
+import { normalizeWalletError } from "../utils/normalizeWalletError.js";
+
+/**
+ * Pass `{ nonce }` to construct the standard Nexcord sign-in message,
+ * or `{ message }` to sign a fully custom string.
+ * A plain string is also accepted and treated as a nonce (backwards-compat).
+ */
+export type NexcordSignInput =
+  | string
+  | { nonce: string }
+  | { message: string };
 
 export interface UseNexcordSignResult {
-  /** Trigger the wallet signature request. */
   signMessage: () => void;
-  /** The hex signature returned by the wallet, or undefined if not yet signed. */
   signature: string | undefined;
-  /** The exact message string that will be (or was) signed. */
+  /** The exact message string that will be / was signed. */
   message: string;
-  /** True while the wallet is waiting for user confirmation. */
   isPending: boolean;
-  /** Last signing error, or null. */
   error: Error | null;
 }
 
-export function useNexcordSign(nonce: string): UseNexcordSignResult {
-  const message = `Verify wallet for Nexcord\nNonce: ${nonce}`;
+function resolveMessage(input: NexcordSignInput): string {
+  if (typeof input === "string") {
+    return `Verify wallet for Nexcord\nNonce: ${input}`;
+  }
+  if ("nonce" in input) {
+    return `Verify wallet for Nexcord\nNonce: ${input.nonce}`;
+  }
+  return input.message;
+}
 
+export function useNexcordSign(input: NexcordSignInput): UseNexcordSignResult {
+  const message = resolveMessage(input);
   const { signMessage, data: signature, isPending, error } = useSignMessage();
 
   return {
@@ -25,6 +41,6 @@ export function useNexcordSign(nonce: string): UseNexcordSignResult {
     signature,
     message,
     isPending,
-    error,
+    error: normalizeWalletError(error),
   };
 }

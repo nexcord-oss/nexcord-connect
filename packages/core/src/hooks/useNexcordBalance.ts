@@ -1,6 +1,7 @@
 "use client";
 // Returns the native or ERC-20 balance for the connected wallet.
 import { useAccount, useBalance } from "wagmi";
+import { normalizeWalletError } from "../utils/normalizeWalletError.js";
 
 export interface UseNexcordBalanceParams {
   /** ERC-20 token address. Omit for native chain balance (ETH, MATIC, etc). */
@@ -54,7 +55,7 @@ export function useNexcordBalance(
       : null,
     isLoading,
     isError,
-    error: error as Error | null,
+    error: normalizeWalletError(error),
     refetch,
   };
 }

@@ -6,7 +6,7 @@ Monorepo for [@nexcord-oss/connect](https://www.npmjs.com/package/@nexcord-oss/c
 
 | Package | Version | Description |
 |---|---|---|
-| [`@nexcord-oss/connect`](./packages/core) | 0.4.0 | Core SDK |
+| [`@nexcord-oss/connect`](./packages/core) | 0.5.0 | Core SDK |
 
 ## Apps
 

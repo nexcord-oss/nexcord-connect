@@ -1,5 +1,6 @@
 "use client";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { normalizeWalletError } from "../utils/normalizeWalletError.js";
 
 export interface UseNexcordConnectResult {
   address: string | undefined;
@@ -21,7 +22,7 @@ export function useNexcordConnect(): UseNexcordConnectResult {
     chainId,
     isConnected,
     isConnecting,
-    error: connectError ?? disconnectError ?? null,
+    error: normalizeWalletError(connectError ?? disconnectError ?? null),
     connect: () => {
       const connector = connectors[0];
       if (connector) connect({ connector });
