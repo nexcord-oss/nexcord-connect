@@ -5,11 +5,11 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactElement,
 } from "react";
 import { WagmiProvider } from "wagmi";
-import { reconnect } from "@wagmi/core";
 import type { NexcordProviderProps } from "../types/index.js";
 import { createNexcordWagmiConfig } from "../utils/config.js";
 
@@ -29,7 +29,18 @@ export function NexcordProvider(
   const { children, cloudApiKey } = props;
   const [mounted, setMounted] = useState(false);
   const [queryClient] = useState(() => new QueryClient());
-  const [wagmiConfig, setWagmiConfig] = useState<ReturnType<typeof createNexcordWagmiConfig> | null>(null);
+
+  // Create the wagmi config exactly once, client-side only.
+  // - The ref guard prevents React StrictMode (dev) from creating two
+  //   different config objects, which would discard the restored session.
+  // - The `window` check keeps connector setup (which touches localStorage /
+  //   indexedDB) off the server, avoiding SSR/SSG crashes.
+  const configRef = useRef<ReturnType<typeof createNexcordWagmiConfig> | null>(
+    null
+  );
+  if (typeof window !== "undefined" && configRef.current === null) {
+    configRef.current = createNexcordWagmiConfig(props);
+  }
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development" && !props.projectId) {
@@ -38,16 +49,10 @@ export function NexcordProvider(
         "Get a free project ID at https://cloud.reown.com and pass it as the projectId prop."
       );
     }
-    const config = createNexcordWagmiConfig(props);
-    setWagmiConfig(config);
     setMounted(true);
-    // Manually reconnect instead of relying on WagmiProvider's reconnectOnMount,
-    // so we can swallow rejections from injected wallets (e.g. MetaMask refusing
-    // eth_requestAccounts on a page load the user hasn't interacted with).
-    reconnect(config).catch(() => {});
   }, []);
 
-  if (!mounted || wagmiConfig === null) return null;
+  if (!mounted || configRef.current === null) return null;
 
   const cloudContextValue =
     cloudApiKey === undefined ? {} : { cloudApiKey };
@@ -58,7 +63,10 @@ export function NexcordProvider(
 
   return (
     <NexcordCloudContext.Provider value={cloudContextValue}>
-      <WagmiProvider config={wagmiConfig} reconnectOnMount={false}>
+      {/* reconnectOnMount defaults to true — wagmi restores the previous
+          session silently (eth_accounts), so reloads keep the wallet
+          connected without re-prompting injected wallets. */}
+      <WagmiProvider config={configRef.current}>
         <QueryClientProvider client={queryClient}>
           {inner}
         </QueryClientProvider>

@@ -1,5 +1,5 @@
 // Builds wagmi configuration for the Nexcord Connect provider.
-import { createConfig, http, fallback } from "wagmi";
+import { createConfig, createStorage, http, fallback, noopStorage } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
 import { injected, walletConnect } from "wagmi/connectors";
 import type { NexcordConfig } from "../types/index.js";
@@ -29,6 +29,11 @@ export function createNexcordWagmiConfig(config: NexcordConfig) {
       walletConnect({ projectId: config.projectId, showQrModal: false }),
     ],
     transports: Object.fromEntries(chains.map((c) => [c.id, transport(c)])),
+    // Persist the connection to localStorage so reloads restore the session.
+    storage: createStorage({
+      key: "nexcord-connect",
+      storage: typeof window !== "undefined" ? window.localStorage : noopStorage,
+    }),
     ssr: true,
   });
 }
