@@ -92,8 +92,8 @@ const { connect, disconnect, address, chainId, isConnected, isConnecting, error 
 | `address` | `string \| undefined` | Connected wallet address |
 | `chainId` | `number \| undefined` | Active chain ID |
 | `isConnected` | `boolean` | Whether a wallet is connected |
-| `isConnecting` | `boolean` | Connection in progress |
-| `error` | `Error \| null` | Last connect/disconnect error |
+| `isConnecting` | `boolean` | True during both initial connection and the reconnect-on-mount phase (`connecting` or `reconnecting`) |
+| `error` | `Error \| null` | Last connect/disconnect error, normalized to a readable string |
 | `connect()` | `() => void` | Connect using the first available connector |
 | `disconnect()` | `() => void` | Disconnect the active wallet |
 
