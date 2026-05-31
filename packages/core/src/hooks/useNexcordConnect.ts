@@ -6,6 +6,7 @@ export interface UseNexcordConnectResult {
   address: string | undefined;
   chainId: number | undefined;
   isConnected: boolean;
+  /** True during both initial connection and the reconnect-on-mount phase. */
   isConnecting: boolean;
   error: Error | null;
   connect: () => void;
@@ -13,15 +14,15 @@ export interface UseNexcordConnectResult {
 }
 
 export function useNexcordConnect(): UseNexcordConnectResult {
-  const { address, chainId, isConnected, isConnecting } = useAccount();
+  const { address, chainId, status } = useAccount();
   const { connect, connectors, error: connectError } = useConnect();
   const { disconnect, error: disconnectError } = useDisconnect();
 
   return {
     address,
     chainId,
-    isConnected,
-    isConnecting,
+    isConnected: status === "connected",
+    isConnecting: status === "connecting" || status === "reconnecting",
     error: normalizeWalletError(connectError ?? disconnectError ?? null),
     connect: () => {
       const connector = connectors[0];

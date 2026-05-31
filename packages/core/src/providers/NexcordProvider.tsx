@@ -9,6 +9,7 @@ import {
   type ReactElement,
 } from "react";
 import { WagmiProvider } from "wagmi";
+import { reconnect } from "@wagmi/core";
 import type { NexcordProviderProps } from "../types/index.js";
 import { createNexcordWagmiConfig } from "../utils/config.js";
 
@@ -37,8 +38,13 @@ export function NexcordProvider(
         "Get a free project ID at https://cloud.reown.com and pass it as the projectId prop."
       );
     }
-    setWagmiConfig(createNexcordWagmiConfig(props));
+    const config = createNexcordWagmiConfig(props);
+    setWagmiConfig(config);
     setMounted(true);
+    // Manually reconnect instead of relying on WagmiProvider's reconnectOnMount,
+    // so we can swallow rejections from injected wallets (e.g. MetaMask refusing
+    // eth_requestAccounts on a page load the user hasn't interacted with).
+    reconnect(config).catch(() => {});
   }, []);
 
   if (!mounted || wagmiConfig === null) return null;
@@ -52,7 +58,7 @@ export function NexcordProvider(
 
   return (
     <NexcordCloudContext.Provider value={cloudContextValue}>
-      <WagmiProvider config={wagmiConfig}>
+      <WagmiProvider config={wagmiConfig} reconnectOnMount={false}>
         <QueryClientProvider client={queryClient}>
           {inner}
         </QueryClientProvider>
