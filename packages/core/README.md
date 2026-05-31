@@ -128,6 +128,35 @@ const { connector, connectors, connectWith } = useNexcordWallet();
 | `connectors` | `{ id, name }[]` | All available connectors |
 | `connectWith(connector)` | `({ id, name }) => void` | Connect via a specific connector |
 
+### `useNexcordBalance`
+
+Returns the native or ERC-20 balance for the connected wallet. Automatically disabled when no wallet is connected.
+
+```tsx
+import { useNexcordBalance } from "@nexcord-oss/connect";
+
+// Native balance (ETH, MATIC, etc.)
+const { balance, isLoading, isError, refetch } = useNexcordBalance();
+
+// ERC-20 token balance
+const { balance } = useNexcordBalance({ tokenAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48" });
+
+// On a specific chain
+const { balance } = useNexcordBalance({ chainId: 137 });
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `balance` | `NexcordBalance \| null` | Balance data, or null while loading / disconnected |
+| `balance.formatted` | `string` | Human-readable value (e.g. `"1.2345"`) |
+| `balance.symbol` | `string` | Token symbol (e.g. `"ETH"`, `"USDC"`) |
+| `balance.value` | `bigint` | Raw on-chain value |
+| `balance.decimals` | `number` | Token decimals |
+| `isLoading` | `boolean` | True on first fetch |
+| `isError` | `boolean` | True if the fetch failed |
+| `error` | `Error \| null` | Fetch error, or null |
+| `refetch()` | `() => void` | Manually re-fetch |
+
 ### `useNexcordSign`
 
 Constructs a Nexcord-formatted sign-in message and wraps wagmi's `useSignMessage`. Useful for wallet-based authentication flows.

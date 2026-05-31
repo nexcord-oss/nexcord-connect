@@ -31,6 +31,12 @@ export function NexcordProvider(
   const [wagmiConfig, setWagmiConfig] = useState<ReturnType<typeof createNexcordWagmiConfig> | null>(null);
 
   useEffect(() => {
+    if (process.env.NODE_ENV === "development" && !props.projectId) {
+      console.warn(
+        "[NexcordProvider] Missing projectId — WalletConnect will not work.\n" +
+        "Get a free project ID at https://cloud.reown.com and pass it as the projectId prop."
+      );
+    }
     setWagmiConfig(createNexcordWagmiConfig(props));
     setMounted(true);
   }, []);

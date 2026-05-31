@@ -6,7 +6,7 @@ Monorepo for [@nexcord-oss/connect](https://www.npmjs.com/package/@nexcord-oss/c
 
 | Package | Version | Description |
 |---|---|---|
-| [`@nexcord-oss/connect`](./packages/core) | 0.3.0 | Core SDK |
+| [`@nexcord-oss/connect`](./packages/core) | 0.4.0 | Core SDK |
 
 ## Apps
 
@@ -17,7 +17,7 @@ Monorepo for [@nexcord-oss/connect](https://www.npmjs.com/package/@nexcord-oss/c
 ## What's in the SDK
 
 - **Default mode** — drop in `<NexcordProvider>` + `<NexcordConnectButton>` and get a fully styled ConnectKit wallet modal in seconds.
-- **Headless mode** — set `mode="headless"` on the provider and use `useNexcordConnect`, `useNexcordChain`, `useNexcordWallet`, and `useNexcordSign` to build your own UI on top of wagmi context.
+- **Headless mode** — set `mode="headless"` on the provider and use `useNexcordConnect`, `useNexcordChain`, `useNexcordWallet`, `useNexcordBalance`, and `useNexcordSign` to build your own UI on top of wagmi context.
 
 ## Development
 

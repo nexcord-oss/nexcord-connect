@@ -5,6 +5,7 @@ import {
   useNexcordChain,
   useNexcordWallet,
   useNexcordSign,
+  useNexcordBalance,
 } from "@nexcord-oss/connect";
 import type { ReactElement } from "react";
 import Link from "next/link";
@@ -113,8 +114,15 @@ function WalletState(): ReactElement {
   const { address, chainId, isConnected, disconnect } = useNexcordConnect();
   const { connector } = useNexcordWallet();
   const { chain } = useNexcordChain();
+  const { balance, isLoading: balanceLoading } = useNexcordBalance();
 
   if (!isConnected) return <></>;
+
+  const balanceDisplay = balanceLoading
+    ? "Loading…"
+    : balance
+    ? `${Number(balance.formatted).toFixed(4)} ${balance.symbol}`
+    : "—";
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-sm)" }}>
@@ -124,6 +132,7 @@ function WalletState(): ReactElement {
       <div style={{ background: "var(--bg-card)", border: "1px solid var(--border-default)", borderRadius: "12px", padding: "1rem", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
         {[
           ["Address", address ? `${address.slice(0, 10)}...${address.slice(-6)}` : "—"],
+          ["Balance", balanceDisplay],
           ["Chain", chain ? `${chain.name} (${chainId})` : String(chainId)],
           ["Connector", connector?.name ?? "—"],
         ].map(([label, value]) => (
